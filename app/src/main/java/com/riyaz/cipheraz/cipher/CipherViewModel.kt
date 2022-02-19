@@ -50,7 +50,7 @@ class CipherViewModel(val path: String) : ViewModel() {
     }
 
     private suspend fun doCryption() {
-        CipherUtils.encrypt(key.value.toString(), File(filePath.value), File(outputFile.value))
+        CipherUtils.encrypt(key.value.toString(), File(filePath.value), File(outputFile.value.toString()))
     }
 
     fun getExtention(): String{
