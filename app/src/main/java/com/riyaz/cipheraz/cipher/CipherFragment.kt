@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.riyaz.cipheraz.R
@@ -32,7 +35,7 @@ class CipherFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, CipherViewModelFactory(path?: "")).get(CipherViewModel::class.java)
 
-        viewModel.setOutputFileName.observe( viewLifecycleOwner, Observer {
+        viewModel.crypt.observe( viewLifecycleOwner, Observer {
             it?.let{
                 if(it){
                     if (checkParameters()) return@Observer
@@ -41,7 +44,22 @@ class CipherFragment : Fragment() {
             }
         })
 
+        binding.textInputLayout.editText?.doOnTextChanged { text, start, before, count ->
+            text?.let {
+
+                binding.textInputLayout.error = "Invalid"
+
+            }
+        }
+
+        setDropDownET()
+
         return binding.root
+    }
+
+    private fun setDropDownET() {
+        var adapter = ArrayAdapter(requireContext(), R.layout.et_dropdown_list_item, viewModel.item)
+        (binding.dropdownAlgo as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
     private fun crypt() {
@@ -67,11 +85,8 @@ class CipherFragment : Fragment() {
             ).show()
             return true
         }
-        return false
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        return false
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

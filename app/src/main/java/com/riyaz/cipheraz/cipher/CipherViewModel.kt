@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.riyaz.cipheraz.utils.Algorithm
 import com.riyaz.cipheraz.utils.CipherUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,15 @@ class CipherViewModel(val path: String) : ViewModel() {
     private val _filePath = MutableLiveData<String>("");
     val filePath: LiveData<String> get() = _filePath
 
+    private val _crypt = MutableLiveData<Boolean>()
+    val crypt: LiveData<Boolean> get() = _crypt
+
     private val _nameOfOutputFile = MutableLiveData<String>()
     val nameOfOutputFile: LiveData<String> get() = _nameOfOutputFile
 
     private val key = MutableLiveData<String>()
+
+    var item = listOf(Algorithm.values())
 
     private val outputFile = Transformations.map(nameOfOutputFile){
         getOutputFilePath() + nameOfOutputFile.value + getExtention()
@@ -66,5 +72,9 @@ class CipherViewModel(val path: String) : ViewModel() {
         }
         s.substring(0, i+1)
         return s.toString()
+    }
+
+    fun onGoClicked(){
+        _crypt.value = true
     }
 }
