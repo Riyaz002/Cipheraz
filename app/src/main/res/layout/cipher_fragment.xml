@@ -55,11 +55,12 @@
             android:layout_marginBottom="16dp"
             android:contentDescription="Choose an algorithm"
             android:hint="Algorithm"
-            app:endIconTint="@color/purple_700"
             android:textColorHint="@color/purple_700"
             app:boxCornerRadiusTopEnd="10dp"
             app:boxCornerRadiusTopStart="10dp"
+            app:endIconTint="@color/purple_700"
             app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <AutoCompleteTextView
@@ -129,9 +130,9 @@
             android:onClick="@{() -> cipherViewModel.onGoClicked()}"
             android:text="GO"
             app:cornerRadius="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="667dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

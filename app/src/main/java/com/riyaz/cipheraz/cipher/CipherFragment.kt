@@ -12,8 +12,10 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.riyaz.cipheraz.R
 import com.riyaz.cipheraz.databinding.CipherFragmentBinding
+import com.riyaz.cipheraz.selectfile.SelectFileFragment
 
 class CipherFragment : Fragment() {
 
@@ -31,7 +33,8 @@ class CipherFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.cipher_fragment, container, false)
 
-        val path = CipherFragmentArgs().path
+        val args: CipherFragmentArgs by navArgs()
+        val path: String? = args.path
 
         viewModel = ViewModelProvider(this, CipherViewModelFactory(path?: "")).get(CipherViewModel::class.java)
 
