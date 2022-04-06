@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cipheraz</string>
+    <string name="error">Need exactly 16 characters</string>
 </resources>

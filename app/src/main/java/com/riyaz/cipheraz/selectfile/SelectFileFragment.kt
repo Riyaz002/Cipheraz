@@ -76,13 +76,14 @@ class SelectFileFragment : Fragment() {
             selectFile()
         }
 
-        requestStoragePermission();
+        //requestStoragePermission();
     }
 
     private fun selectFile() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.setType("text/*")
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply{
+            addCategory(Intent.CATEGORY_OPENABLE)
+            setType("*/*")
+        }
         startActivityForResult(this.requireActivity(), intent, SELECT_FILE_REQUEST_CODE, null)
     }
 
@@ -126,9 +127,10 @@ class SelectFileFragment : Fragment() {
         if(requestCode == SELECT_FILE_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 data?.let {
-                    viewModel.fetchPath(it.data?.path.toString().substring(it.data?.path.toString().indexOf(":")))
+                    //viewModel.fetchPath(it.data?.path.toString())
+                    Toast.makeText(requireContext(), "${it.data?.path.toString()}", Toast.LENGTH_SHORT).show()
                 }
-                viewModel.fileSelected()
+                //viewModel.fileSelected()
             }
         }
     }

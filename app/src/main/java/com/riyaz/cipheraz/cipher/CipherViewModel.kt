@@ -1,9 +1,6 @@
 package com.riyaz.cipheraz.cipher
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.riyaz.cipheraz.utils.Algorithm
 import com.riyaz.cipheraz.utils.CipherUtils
 import kotlinx.coroutines.CoroutineScope
@@ -28,9 +25,7 @@ class CipherViewModel(val path: String) : ViewModel() {
 
     var item = listOf(Algorithm.values())
 
-    private val outputFile = Transformations.map(nameOfOutputFile){
-        getOutputFilePath() + nameOfOutputFile.value + getExtention()
-    }
+    private val outputFilePath = MutableLiveData<String>(null)
 
     val job = Job()
 
@@ -41,7 +36,6 @@ class CipherViewModel(val path: String) : ViewModel() {
     }
 
     fun crypt(){
-
         viewModelScope.launch {
             doCryption()
         }
@@ -51,8 +45,16 @@ class CipherViewModel(val path: String) : ViewModel() {
         this.key.value = key
     }
 
+    fun setOutputFilePath(path: String){
+        outputFilePath.value = path
+    }
+
     fun setNameOfOutputFile(name: String) {
         _nameOfOutputFile.value = name
+    }
+
+    val outputFile: LiveData<String> = Transformations.map(outputFilePath.combine(nameOfOutputFile)){
+        it.first + it.second
     }
 
     private suspend fun doCryption() {
@@ -65,7 +67,7 @@ class CipherViewModel(val path: String) : ViewModel() {
     }
 
     fun getOutputFilePath(): String{
-        val s: StringBuilder = StringBuilder(filePath.value)
+        val s = StringBuilder(filePath.value)
         var i = s.length
         while(s.get(i) != '/'){
             i--;
@@ -77,4 +79,14 @@ class CipherViewModel(val path: String) : ViewModel() {
     fun onGoClicked(){
         _crypt.value = true
     }
+}
+class PairLiveData<A, B>(first: LiveData<A>, second: LiveData<B>) : MediatorLiveData<Pair<A?, B?>>() {
+    init {
+        addSource(first) { value = it to second.value }
+        addSource(second) { value = first.value to it }
+    }
+}
+
+fun <A, B> LiveData<A>.combine(other: LiveData<B>): PairLiveData<A, B> {
+    return PairLiveData(this, other)
 }
