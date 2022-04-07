@@ -20,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.riyaz.cipheraz.R
 import com.riyaz.cipheraz.databinding.CipherFragmentBinding
 import com.riyaz.cipheraz.selectfile.SelectFileFragment
+import com.riyaz.cipheraz.utils.CypherMode
 import java.util.*
 
 const val CREATE_DOC_REQUEST_CODE = 21
@@ -57,17 +58,32 @@ class CipherFragment : Fragment() {
 
         binding.apply {
             etOutputFileName.editText?.doOnTextChanged { text, start, before, count ->
+                btnGo.isEnabled = count != 0
                 text?.let {
                     viewModel.setNameOfOutputFile(it.toString())
                 }
             }
             etKey.editText?.doOnTextChanged { text, start, before, count ->
-                if(count != 16){
-                    etKey.error = getString(R.string.error)
-                } else{
-                    etKey.error = null
-                    viewModel.setKey(text.toString())
+                when {
+                    count != 16 -> {
+                        btnGo.isEnabled = false
+                        etKey.error = getString(R.string.error)
+                    }
+                    else -> {
+                        etKey.error = null
+                        viewModel.setKey(text.toString())
+                    }
                 }
+            }
+            encryptionButton.setOnClickListener {
+                encryptionButton.isEnabled = false
+                decryptionButton.isEnabled = true
+                viewModel.setMode(CypherMode.ENCRYPT)
+            }
+            decryptionButton.setOnClickListener {
+                decryptionButton.isEnabled = false
+                encryptionButton.isEnabled = true
+                viewModel.setMode(CypherMode.DECRYPT)
             }
         }
 
@@ -84,35 +100,10 @@ class CipherFragment : Fragment() {
         startActivityForResult(intent, CREATE_DOC_REQUEST_CODE)
     }
 
-    private fun setDropDownET() {
-        var adapter = ArrayAdapter(requireContext(), R.layout.et_dropdown_list_item, viewModel.item)
-        (binding.dropdownAlgo as? AutoCompleteTextView)?.setAdapter(adapter)
-    }
 
     private fun isFieldsFilled(): Boolean {
         return binding.etKey.error.isNullOrEmpty() && !binding.etOutputFileName.editText?.text.isNullOrEmpty()
     }
-
-
-//    private fun checkParameters(): Boolean {
-//        if (binding.etKey.text.toString().length == 0) {
-//            Toast.makeText(
-//                this.requireContext(),
-//                "Please, set the key.",
-//                Toast.LENGTH_SHORT)
-//                .show()
-//            return true
-//        }
-//        if (binding.etOutputFileName.text.toString().length == 0) {
-//            Toast.makeText(
-//                this.requireContext(),
-//                "Please, give the output file name.",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//            return true
-//        }
-//        return false
-//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == CREATE_DOC_REQUEST_CODE){

@@ -9,7 +9,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         tools:context=".selectfile.SelectFileFragment">
 
         <com.google.android.material.textview.MaterialTextView
@@ -17,12 +16,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto"
             android:text="xioamconeocn ow cow cowincwnceowc owj onw caeoi oeanpoae oaer oea oenarienpea;vm o aenrvnp eap naevpaemv od aenpvna povjsmvinrv 9jerjpw9er hwe8h vkldsn 8 uh8vh l vnfvherj vid;j a ;eorjf;saocaiejc;a8j;a ij9;ejr ;ajoiaj;je ;fajerj ae;ja;j ;aj;jea;raj aj"
             android:textColor="@color/purple_500"
             android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,10 +37,9 @@
             android:fontFamily="@font/roboto"
             android:text="Choose file"
             app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_choose_file"
-            app:layout_constraintVertical_bias="0.75" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_choose_file" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

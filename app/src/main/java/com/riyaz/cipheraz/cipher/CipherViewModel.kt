@@ -3,6 +3,7 @@ package com.riyaz.cipheraz.cipher
 import androidx.lifecycle.*
 import com.riyaz.cipheraz.utils.Algorithm
 import com.riyaz.cipheraz.utils.CipherUtils
+import com.riyaz.cipheraz.utils.CypherMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,7 +24,10 @@ class CipherViewModel(val path: String) : ViewModel() {
 
     private val key = MutableLiveData<String>()
 
-    var item = listOf(Algorithm.values())
+    private val _cryptMode = MutableLiveData<CypherMode>(null)
+    val cryptMode: LiveData<CypherMode> get() = _cryptMode
+
+    //var item = listOf(Algorithm.values())
 
     private val outputFilePath = MutableLiveData<String>(null)
 
@@ -61,23 +65,22 @@ class CipherViewModel(val path: String) : ViewModel() {
         CipherUtils.encrypt(key.value.toString(), File(filePath.value), File(outputFile.value.toString()))
     }
 
-    fun getExtention(): String{
-        var i = path.length
-        return path.substring(i-4, i)
-    }
-
-    fun getOutputFilePath(): String{
-        val s = StringBuilder(filePath.value)
-        var i = s.length
-        while(s.get(i) != '/'){
-            i--;
-        }
-        s.substring(0, i+1)
-        return s.toString()
-    }
+//    fun getOutputFilePath(): String{
+//        val s = StringBuilder(filePath.value)
+//        var i = s.length
+//        while(s.get(i) != '/'){
+//            i--;
+//        }
+//        s.substring(0, i+1)
+//        return s.toString()
+//    }
 
     fun onGoClicked(){
         _crypt.value = true
+    }
+
+    fun setMode(mode: CypherMode){
+        _cryptMode.value = mode
     }
 }
 class PairLiveData<A, B>(first: LiveData<A>, second: LiveData<B>) : MediatorLiveData<Pair<A?, B?>>() {

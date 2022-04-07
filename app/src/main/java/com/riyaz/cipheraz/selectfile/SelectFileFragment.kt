@@ -3,16 +3,18 @@ package com.riyaz.cipheraz.selectfile
 import android.Manifest
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils.substring
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.collection.arrayMapOf
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat.checkSelfPermission
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.databinding.DataBindingUtil
@@ -22,10 +24,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.riyaz.cipheraz.R
 import com.riyaz.cipheraz.databinding.SelectFileFragmentBinding
-import java.security.Permission
-import java.security.Permissions
-import java.util.*
-import kotlin.collections.ArrayList
+import com.riyaz.cipheraz.utils.GetUriMetadata
+import androidx.activity.result.contract.ActivityResultContract as MyContract
 
 const val SELECT_FILE_REQUEST_CODE = 1
 const val REQUEST_STORAGE_PERMISSION = 10
@@ -48,13 +48,7 @@ class SelectFileFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.select_file_fragment, container, false)
 
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SelectFileViewModel::class.java)
-
         viewModel.eventOnFileSelected.observe(viewLifecycleOwner, Observer {
             it?.let {
                 if(it && viewModel.path != null){
@@ -71,11 +65,22 @@ class SelectFileFragment : Fragment() {
             }
         })
         // TODO: Use the ViewModel
-        binding.buttonChooseFile.setOnClickListener {
-            //viewModel.onChooseFileButtonClicked()
-            selectFile()
+
+        val getContent = registerForActivityResult(SelectFile()){ Uri ->
+            Toast.makeText(requireContext(), "${Uri.toString()}", Toast.LENGTH_SHORT).show()
         }
 
+        binding.buttonChooseFile.setOnClickListener {
+            //viewModel.onChooseFileButtonClicked()
+            //selectFile()
+            getContent.launch(SELECT_FILE_REQUEST_CODE)
+        }
+
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         //requestStoragePermission();
     }
 
@@ -125,13 +130,30 @@ class SelectFileFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == SELECT_FILE_REQUEST_CODE){
-            if(resultCode == RESULT_OK){
+            Log.e("result ${requestCode}: ", "yes")
+            if(true){
                 data?.let {
                     //viewModel.fetchPath(it.data?.path.toString())
-                    Toast.makeText(requireContext(), "${it.data?.path.toString()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "path: ${it.data?.path.toString()}", Toast.LENGTH_SHORT).show()
                 }
                 //viewModel.fileSelected()
             }
         }
+    }
+}
+class SelectFile: androidx.activity.result.contract.ActivityResultContract<Int, Uri>(){
+
+    override fun createIntent(p0: Context, p1: Int?): Intent {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply{
+            addCategory(Intent.CATEGORY_OPENABLE)
+            setType("*/*")
+        }
+        return intent
+    }
+
+    override fun parseResult(p0: Int, p1: Intent?): Uri? {
+        val path = p1?.dataString?:""
+        val uri: Uri = Uri.parse(path)
+        return uri
     }
 }
