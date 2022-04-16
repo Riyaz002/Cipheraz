@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".selectfile.SelectFileFragment">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_choose_file"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/roboto"
+            android:text="xioamconeocn ow cow cowincwnceowc owj onw caeoi oeanpoae oaer oea oenarienpea;vm o aenrvnp eap naevpaemv od aenpvna povjsmvinrv 9jerjpw9er hwe8h vkldsn 8 uh8vh l vnfvherj vid;j a ;eorjf;saocaiejc;a8j;a ij9;ejr ;ajoiaj;je ;fajerj ae;ja;j ;aj;jea;raj aj"
+            android:textColor="@color/purple_500"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_choose_file"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_choose_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@color/purple_700"
+            android:fontFamily="@font/roboto"
+            android:text="Choose file"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
