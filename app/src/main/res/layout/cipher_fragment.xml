@@ -19,29 +19,25 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_filename"
-            style="@style/myETextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            app:boxBackgroundColor="#DFDFDF"
-            android:layout_marginBottom="8dp"
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="@color/blue"
             android:hint="Output File Name"
             android:textColorHint="@color/blue"
-            app:hintTextColor="@color/blue"
+            app:boxBackgroundColor="#DFDFDF"
             app:endIconMode="clear_text"
             app:errorEnabled="true"
-            android:backgroundTint="@color/blue"
             app:hintEnabled="true"
+            app:hintTextColor="@color/blue"
             app:layout_constraintBottom_toTopOf="@+id/txt_key"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed">
+            app:layout_constraintTop_toBottomOf="@+id/btn_choose_file">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_output_file_name"
-                style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -55,9 +51,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginVertical="8dp"
+            android:backgroundTint="@color/blue"
             android:hint="Key"
+            android:maxLength="16"
             android:textColorHint="@color/blue"
             app:boxBackgroundColor="#DFDFDF"
             app:boxCornerRadiusTopEnd="10dp"
@@ -67,10 +64,9 @@
             app:endIconDrawable="@drawable/ic_round_clear_24"
             app:endIconMode="clear_text"
             app:errorEnabled="true"
-            android:maxLength="16"
-            android:backgroundTint="@color/blue"
             app:hintTextColor="@color/blue"
-            app:layout_constraintBottom_toTopOf="@+id/encryption_Button"
+            app:layout_constraintBottom_toTopOf="@+id/decryption_Button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_filename">
 
@@ -79,13 +75,15 @@
                 style="@style/Widget.Design.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:fontFamily="@font/roboto"
+                android:maxLength="16"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/encryption_Button"
+            android:id="@+id/decryption_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -95,26 +93,26 @@
             android:text="Decryption"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/btn_go"
-            app:layout_constraintEnd_toStartOf="@+id/decryption_Button"
+            app:layout_constraintEnd_toStartOf="@+id/encryption_Button"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_key" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/decryption_Button"
+            android:id="@+id/encryption_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:backgroundTint="@color/blue"
             android:fontFamily="@font/roboto"
             android:text="Encryption"
-            app:layout_constraintBaseline_toBaselineOf="@+id/encryption_Button"
+            android:textColor="@color/white"
+            app:layout_constraintBaseline_toBaselineOf="@+id/decryption_Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/encryption_Button" />
+            app:layout_constraintStart_toEndOf="@+id/decryption_Button" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_go"
@@ -131,20 +129,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/encryption_Button" />
+            app:layout_constraintTop_toBottomOf="@+id/decryption_Button" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_choose_file"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
             android:text="Choose File"
+            android:textColor="@color/white"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
             app:layout_constraintBottom_toTopOf="@+id/txt_filename"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

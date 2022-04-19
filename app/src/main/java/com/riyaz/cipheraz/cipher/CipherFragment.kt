@@ -33,7 +33,7 @@ class CipherFragment : Fragment() {
 
     lateinit var binding: CipherFragmentBinding
     lateinit var inputUri: Uri
-    var outputUri: Uri = Uri.Builder().build()
+    var outputUri: Uri = Uri.EMPTY
     lateinit var type: String
     lateinit var contentResolver: ContentResolver
     lateinit var key: String
@@ -50,6 +50,7 @@ class CipherFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.cipher_fragment, container, false)
         contentResolver = requireContext().applicationContext.contentResolver
+        binding.btnGo.isEnabled = false
         type = ""
         viewModel = ViewModelProvider(
             this,
@@ -65,20 +66,18 @@ class CipherFragment : Fragment() {
                 }
             }
         })
-
+                          Cipher.DECRYPT_MODE
         binding.decryptionButton.setOnClickListener {
-            it.setBackgroundResource(R.color.grey)
-            binding.encryptionButton.setBackgroundResource(R.color.blue)
             it.isEnabled = false
             binding.encryptionButton.isEnabled = true
             viewModel.setMode(Mode.DECRYPT)
+            Toast.makeText(requireContext(), "${viewModel.mode.value}", Toast.LENGTH_SHORT).show()
         }
         binding.encryptionButton.setOnClickListener {
-            it.setBackgroundResource(R.color.grey)
-            binding.decryptionButton.setBackgroundResource(R.color.blue)
             it.isEnabled = false
             binding.decryptionButton.isEnabled = true
             viewModel.setMode(Mode.ENCRYPT)
+            Toast.makeText(requireContext(), "${viewModel.mode.value}", Toast.LENGTH_SHORT).show()
         }
 
         binding.txtFilename.editText?.doOnTextChanged { text, start, before, count ->
@@ -88,6 +87,9 @@ class CipherFragment : Fragment() {
                 key = it.toString()
                 if (it.length != 16) {
                     binding.txtKey.error = "Invalid length"
+                } else{
+                    binding.txtKey.error = null
+                    binding.btnGo.isEnabled = true
                 }
             }
         }
@@ -110,7 +112,6 @@ class CipherFragment : Fragment() {
             ).show()
             if (checkInputs()) return@setOnClickListener
             createDocument()
-            crypt()
         }
 
         viewModel.eventCreateDocument.observe(viewLifecycleOwner, Observer {
@@ -135,8 +136,8 @@ class CipherFragment : Fragment() {
     private fun createDocument() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "application/*"
-        intent.putExtra(Intent.EXTRA_TITLE, binding.etOutputFileName.text.toString() + type)
+        intent.type = contentResolver.getType(inputUri)
+        intent.putExtra(Intent.EXTRA_TITLE, binding.etOutputFileName.text.toString())
         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, viewModel.initialUri.value)
         startActivityForResult(intent, CREATE_DOC_CODE)
     }
@@ -163,21 +164,12 @@ class CipherFragment : Fragment() {
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "${
-                            inputUri.toString().substring(
-                                inputUri.toString().lastIndexOf('.'),
-                                inputUri.toString().length
-                            )
-                        }",
+                        contentResolver.getType(inputUri),
                         Toast.LENGTH_SHORT
                     ).show()
                     type = inputUri.toString()
                         .substring(inputUri.toString().lastIndexOf('.'), inputUri.toString().length)
                 }
-//                viewModel.setType(uri.path.toString().substring(0, 3))
-//                viewModel.initialUri(uri.lastPathSegment.toString().substring(0, 3))
-//                binding.etOutputFileName?.setText(viewModel.initialUri.value)
-//                binding.etKey.setText(viewModel.type.value)
             }
         }
         if (requestCode == CREATE_DOC_CODE) {
@@ -185,9 +177,10 @@ class CipherFragment : Fragment() {
                 Toast.makeText(requireContext(), "Couldn't create document", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                //viewModel.startCryption()
+
                 Toast.makeText(requireContext(), "Document created", Toast.LENGTH_SHORT).show()
                 outputUri = data?.data!!
+                crypt()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -209,8 +202,8 @@ class CipherFragment : Fragment() {
             val secretKey: Key = SecretKeySpec(key.toByteArray(), "AES")
             val cipher: Cipher = Cipher.getInstance("AES")
 
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-
+            cipher.init(mode.getValue(),secretKey)
+            Toast.makeText(requireContext(), "Mode: ${mode}", Toast.LENGTH_SHORT).show()
             contentResolver.apply {
                 openInputStream(inputUri)?.use { inputStream ->
                     var inputBytes = inputStream.readBytes()
@@ -226,16 +219,8 @@ class CipherFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Log.e(this.tag, e.message ?: "")
-
-            showToast()
-
+            Log.e(this.tag, e.message?:"")
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun showToast() {
-
-        Toast.makeText(requireContext(), "couldn't crypt or make file", Toast.LENGTH_SHORT).show()
-
     }
 }

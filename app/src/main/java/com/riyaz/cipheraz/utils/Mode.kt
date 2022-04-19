@@ -6,6 +6,6 @@ enum class Mode(private val mode: Int) {
     DECRYPT(Cipher.DECRYPT_MODE);
 
     fun getValue(): Int{
-        return mode
+        return this.mode
     }
 }
