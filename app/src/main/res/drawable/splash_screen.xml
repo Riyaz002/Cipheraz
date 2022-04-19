@@ -4,8 +4,11 @@
     <item
         android:drawable="@drawable/white_gradiant"/>
     <item>
+
         <bitmap
          android:gravity="center"
+            android:scaleType="centerCrop"
          android:src="@drawable/undraw_secure_files_re_6vdh"/>
     </item>
+
 </layer-list>
