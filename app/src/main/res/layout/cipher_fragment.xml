@@ -18,18 +18,44 @@
         tools:context=".cipher.CipherFragment">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_key"
+            style="@style/textLayoutStyle2"
+            android:enabled="true"
+            android:hint="key"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="16"
+            app:endIconDrawable="@drawable/ic_baseline_visibility_off_24"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
+            app:hintTextColor="@color/blue"
+            app:layout_constraintBottom_toTopOf="@+id/decryption_Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_filename">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:fontFamily="@font/roboto"
+                android:maxLength="16"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_filename"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
-            android:backgroundTint="@color/blue"
-            android:hint="Output File Name"
-            android:textColorHint="@color/blue"
-            app:boxBackgroundColor="#DFDFDF"
+            style="@style/textLayoutStyle2"
+            android:enabled="true"
+            android:hint="file name"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:endIconDrawable="@drawable/ic_round_clear_24"
             app:endIconMode="clear_text"
             app:errorEnabled="true"
-            app:hintEnabled="true"
             app:hintTextColor="@color/blue"
             app:layout_constraintBottom_toTopOf="@+id/txt_key"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,44 +66,8 @@
                 android:id="@+id/et_output_file_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textColor="@color/white" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_key"
-            style="@style/myETextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
-            android:backgroundTint="@color/blue"
-            android:hint="Key"
-            android:maxLength="16"
-            android:textColorHint="@color/blue"
-            app:boxBackgroundColor="#DFDFDF"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="16"
-            app:endIconDrawable="@drawable/ic_round_clear_24"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true"
-            app:hintTextColor="@color/blue"
-            app:layout_constraintBottom_toTopOf="@+id/decryption_Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_filename">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_key"
-                style="@style/Widget.Design.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:fontFamily="@font/roboto"
-                android:maxLength="16"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -123,6 +113,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/blue"
+            android:enabled="false"
             android:text="GO"
             android:textColor="@color/white"
             app:cornerRadius="5dp"

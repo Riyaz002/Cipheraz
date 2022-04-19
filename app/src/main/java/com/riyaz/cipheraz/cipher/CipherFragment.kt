@@ -3,6 +3,9 @@ package com.riyaz.cipheraz.cipher
 import android.app.Activity.RESULT_OK
 import android.content.ContentResolver
 import android.content.Intent
+import android.content.res.Resources
+import android.content.res.loader.ResourcesProvider
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
@@ -32,7 +35,7 @@ const val OPEN_DOC_CODE = 11
 class CipherFragment : Fragment() {
 
     lateinit var binding: CipherFragmentBinding
-    lateinit var inputUri: Uri
+    var inputUri: Uri = Uri.EMPTY
     var outputUri: Uri = Uri.EMPTY
     lateinit var type: String
     lateinit var contentResolver: ContentResolver
@@ -50,61 +53,44 @@ class CipherFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.cipher_fragment, container, false)
         contentResolver = requireContext().applicationContext.contentResolver
-        binding.btnGo.isEnabled = false
         type = ""
         viewModel = ViewModelProvider(
             this,
             CipherViewModelFactory(outputUri.toString(), type)
         )[CipherViewModel::class.java]
 
-        viewModel.crypt.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (it) {
-                    if (binding.txtKey.editText?.text?.length != 16 || binding.txtFilename.editText?.text?.length == 0) return@Observer
-                    crypt()
-                    viewModel.doneCryption()
-                }
-            }
-        })
-                          Cipher.DECRYPT_MODE
         binding.decryptionButton.setOnClickListener {
             it.isEnabled = false
             binding.encryptionButton.isEnabled = true
             viewModel.setMode(Mode.DECRYPT)
-            Toast.makeText(requireContext(), "${viewModel.mode.value}", Toast.LENGTH_SHORT).show()
         }
+
         binding.encryptionButton.setOnClickListener {
             it.isEnabled = false
             binding.decryptionButton.isEnabled = true
             viewModel.setMode(Mode.ENCRYPT)
-            Toast.makeText(requireContext(), "${viewModel.mode.value}", Toast.LENGTH_SHORT).show()
         }
 
-        binding.txtFilename.editText?.doOnTextChanged { text, start, before, count ->
-        }
         binding.txtKey.editText?.doOnTextChanged { text, start, before, count ->
             text?.let {
                 key = it.toString()
                 if (it.length != 16) {
-                    binding.txtKey.error = "Invalid length"
-                } else{
+                    binding.txtKey.error = "key length should be 16"
+                } else {
                     binding.txtKey.error = null
                     binding.btnGo.isEnabled = true
                 }
             }
         }
+
         binding.btnChooseFile.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = "*/*"
             startActivityForResult(intent, OPEN_DOC_CODE)
         }
-        //val intent1 = ActivityResultContracts.StartActivityForResult().createIntent(requireContext(),intent)
 
         binding.btnGo.setOnClickListener {
-            Toast.makeText(requireContext(), "just before starting..", Toast.LENGTH_SHORT).show()
-            //viewModel.setType(uri.toString())
-            //viewModel.initialUri(uri.toString())
             if (inputUri == null) Toast.makeText(
                 requireContext(),
                 "Choose file first",
@@ -113,23 +99,6 @@ class CipherFragment : Fragment() {
             if (checkInputs()) return@setOnClickListener
             createDocument()
         }
-
-        viewModel.eventCreateDocument.observe(viewLifecycleOwner, Observer {
-            it?.let {
-//                if(it){
-//                    viewModel.setType(uri.toString())
-//                    viewModel.initialUri(uri.toString())
-//                    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-//                        addCategory(Intent.CATEGORY_OPENABLE)
-//                        type = "application/${viewModel.type}"
-//                        putExtra(Intent.EXTRA_TITLE, binding.etOutputFileName.text.toString())
-//                        putExtra(DocumentsContract.EXTRA_INITIAL_URI, viewModel.initialUri.value)
-//                    }
-//                    Toast.makeText(requireContext(), "just before starting..", Toast.LENGTH_SHORT).show()
-//                    startActivityForResult(intent, CREATE_DOC_CODE)
-//                }
-            }
-        })
         return binding.root
     }
 
@@ -143,6 +112,10 @@ class CipherFragment : Fragment() {
     }
 
     private fun checkInputs(): Boolean {
+        if (inputUri == Uri.EMPTY) {
+            Toast.makeText(requireContext(), "Choose file to operate on", Toast.LENGTH_SHORT).show()
+            return true
+        }
         if (key.length != 16) {
             Toast.makeText(requireContext(), "Invalid Key Length", Toast.LENGTH_SHORT).show()
             return true
@@ -177,7 +150,6 @@ class CipherFragment : Fragment() {
                 Toast.makeText(requireContext(), "Couldn't create document", Toast.LENGTH_SHORT)
                     .show()
             } else {
-
                 Toast.makeText(requireContext(), "Document created", Toast.LENGTH_SHORT).show()
                 outputUri = data?.data!!
                 crypt()
@@ -189,7 +161,6 @@ class CipherFragment : Fragment() {
     private fun crypt() {
         try {
             startCryptionProcess(viewModel.mode.value!!, key)
-
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -202,7 +173,7 @@ class CipherFragment : Fragment() {
             val secretKey: Key = SecretKeySpec(key.toByteArray(), "AES")
             val cipher: Cipher = Cipher.getInstance("AES")
 
-            cipher.init(mode.getValue(),secretKey)
+            cipher.init(mode.getValue(), secretKey)
             Toast.makeText(requireContext(), "Mode: ${mode}", Toast.LENGTH_SHORT).show()
             contentResolver.apply {
                 openInputStream(inputUri)?.use { inputStream ->
@@ -219,7 +190,7 @@ class CipherFragment : Fragment() {
                 }
             }
         } catch (e: Exception) {
-            Log.e(this.tag, e.message?:"")
+            Log.e(this.tag, e.message ?: "")
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
