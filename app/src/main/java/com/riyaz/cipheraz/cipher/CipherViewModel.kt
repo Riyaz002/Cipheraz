@@ -1,5 +1,6 @@
 package com.riyaz.cipheraz.cipher
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -19,7 +20,8 @@ class CipherViewModel(uri: String, type: String) : ViewModel() {
     private val _filePath = MutableLiveData<String>("");
     val filePath: LiveData<String> get() = _filePath
 
-    lateinit var  initialUri: String
+    private val _initialUri = MutableLiveData<String>()
+    val  initialUri: LiveData<String> get() = _initialUri
 
     private val _crypt = MutableLiveData<Boolean>()
     val crypt: LiveData<Boolean> get() = _crypt
@@ -49,13 +51,13 @@ class CipherViewModel(uri: String, type: String) : ViewModel() {
         getInitialUri(uri)
     }
 
-    private fun getInitialUri(uri: String) {
+    private fun getInitialUri(uri: String): String {
         var i:Int = 0
         var j = 0
         while(i < uri.length){
             if(uri[i] == '/') j = i
         }
-        initialUri = uri.substring(0, j)
+        return uri.substring(0, j)
     }
 
     fun crypt(){
@@ -75,7 +77,7 @@ class CipherViewModel(uri: String, type: String) : ViewModel() {
 //    }
 
     fun onGoClicked(){
-        _crypt.value = true
+        crypt()
     }
 
     fun startCryption() {
@@ -91,5 +93,12 @@ class CipherViewModel(uri: String, type: String) : ViewModel() {
 
     fun setMode(mode: Mode) {
         _mode.value = mode
+    }
+
+    fun setType(uri: String) {
+        _type.value = uri.substring(uri.length-3, uri.length)
+    }
+    fun initialUri(uri: String){
+        _initialUri.value = getInitialUri(uri)
     }
 }

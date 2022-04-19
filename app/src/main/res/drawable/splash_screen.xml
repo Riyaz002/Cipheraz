@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:drawable="@drawable/white_gradiant"/>
+    <item>
+        <bitmap
+         android:gravity="center"
+         android:src="@drawable/undraw_secure_files_re_6vdh"/>
+    </item>
+</layer-list>

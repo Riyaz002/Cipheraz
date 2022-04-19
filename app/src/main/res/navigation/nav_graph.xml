@@ -2,25 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/selectFileFragment">
+    app:startDestination="@id/cipherFragment">
 
-    <fragment
-        android:id="@+id/selectFileFragment"
-        android:name="com.riyaz.cipheraz.selectfile.SelectFileFragment"
-        android:label="SelectFileFragment" >
-        <action
-            android:id="@+id/action_selectFileFragment_to_cipherFragment"
-            app:destination="@id/cipherFragment" />
-    </fragment>
     <fragment
         android:id="@+id/cipherFragment"
         android:name="com.riyaz.cipheraz.cipher.CipherFragment"
-        android:label="CipherFragment" >
-        <argument
-            android:name="uri"
-            app:argType="string" />
-        <argument
-            android:name="type"
-            app:argType="string" />
-    </fragment>
+        android:label="CipherFragment" />
 </navigation>
