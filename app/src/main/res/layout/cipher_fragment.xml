@@ -26,7 +26,7 @@
             app:boxCornerRadiusTopStart="10dp"
             app:counterEnabled="true"
             app:counterMaxLength="16"
-            app:endIconDrawable="@drawable/ic_baseline_visibility_off_24"
+            app:endIconDrawable="@drawable/ic_baseline_visibility_24"
             app:endIconMode="password_toggle"
             app:errorEnabled="true"
             app:hintTextColor="@color/blue"
@@ -38,6 +38,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_key"
                 android:layout_width="match_parent"
+                android:inputType="textPassword"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:fontFamily="@font/roboto"

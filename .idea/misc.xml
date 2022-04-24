@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProjects/thikhe/Cipheraz/app/src/main/res/layout/activity_integrity_check.xml" value="0.22" />
+        <entry key="..\:/AndroidProjects/thikhe/Cipheraz/app/src/main/res/layout/activity_main.xml" value="0.1078125" />
+        <entry key="..\:/AndroidProjects/thikhe/Cipheraz/app/src/main/res/layout/activity_sign_in.xml" value="0.10729166666666666" />
+        <entry key="..\:/AndroidProjects/thikhe/Cipheraz/app/src/main/res/layout/cipher_fragment.xml" value="0.1" />
+        <entry key="..\:/AndroidProjects/thikhe/Cipheraz/app/src/main/res/menu/overflow_menu.xml" value="0.25" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/Cipheraz/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/Cipheraz/app/src/main/res/drawable/background_gradiant.xml" value="0.1" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/Cipheraz/app/src/main/res/drawable/ic_baseline_visibility_24.xml" value="0.1" />
