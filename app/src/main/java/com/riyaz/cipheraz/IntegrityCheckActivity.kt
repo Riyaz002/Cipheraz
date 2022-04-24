@@ -5,13 +5,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import com.riyaz.cipheraz.databinding.ActivityIntegrityCheckBinding
 import java.security.MessageDigest
 import android.provider.OpenableColumns
-
-import android.database.Cursor
 
 
 

@@ -3,13 +3,9 @@ package com.riyaz.cipheraz.cipher
 import android.app.Activity.RESULT_OK
 import android.content.ContentResolver
 import android.content.Intent
-import android.content.res.Resources
-import android.content.res.loader.ResourcesProvider
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +14,6 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.riyaz.cipheraz.R
 import com.riyaz.cipheraz.databinding.CipherFragmentBinding
@@ -26,7 +21,6 @@ import com.riyaz.cipheraz.utils.Mode
 import java.io.*
 import java.security.Key
 import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 const val CREATE_DOC_CODE = 2
