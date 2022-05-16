@@ -40,6 +40,7 @@ class CipherFragment : Fragment() {
     lateinit var type: String
     lateinit var contentResolver: ContentResolver
     lateinit var key: String
+    lateinit var cipher: Cipher
 
     companion object {
         fun newInstance() = CipherFragment()
@@ -74,8 +75,8 @@ class CipherFragment : Fragment() {
         binding.txtKey.editText?.doOnTextChanged { text, start, before, count ->
             text?.let {
                 key = it.toString()
-                if (it.length != 16) {
-                    binding.txtKey.error = "key length should be 16"
+                if (it.length <= 4) {
+                    binding.txtKey.error = "Key is short or unsafe"
                 } else {
                     binding.txtKey.error = null
                     binding.btnGo.isEnabled = true
@@ -116,10 +117,10 @@ class CipherFragment : Fragment() {
             Toast.makeText(requireContext(), "Choose file to operate on", Toast.LENGTH_SHORT).show()
             return true
         }
-        if (key.length != 16) {
-            Toast.makeText(requireContext(), "Invalid Key Length", Toast.LENGTH_SHORT).show()
-            return true
-        }
+//        if (key.length != 16) {
+//            Toast.makeText(requireContext(), "Invalid Key Length", Toast.LENGTH_SHORT).show()
+//            return true
+//        }
         if (binding.etOutputFileName.text.toString().isEmpty()) {
             Toast.makeText(requireContext(), "Enter output file name", Toast.LENGTH_SHORT).show()
             return true
@@ -160,7 +161,7 @@ class CipherFragment : Fragment() {
 
     private fun crypt() {
         try {
-            startCryptionProcess(viewModel.mode.value!!, key)
+            startCryptionProcess(viewModel.mode.value!!)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -168,11 +169,14 @@ class CipherFragment : Fragment() {
         }
     }
 
-    fun startCryptionProcess(mode: Mode, key: String) {
+    fun startCryptionProcess(mode: Mode) {
         try {
+            if(key.length < 16) makeRequiredLength()
+            binding.etOutputFileName.setText(key.length.toString())
             val secretKey: Key = SecretKeySpec(key.toByteArray(), "AES")
-            val cipher: Cipher = Cipher.getInstance("AES")
-
+            if(cipher == null) {
+                cipher = Cipher.getInstance("AES")
+            }
             cipher.init(mode.getValue(), secretKey)
             Toast.makeText(requireContext(), "Mode: ${mode}", Toast.LENGTH_SHORT).show()
             contentResolver.apply {
@@ -193,5 +197,9 @@ class CipherFragment : Fragment() {
             Log.e(this.tag, e.message ?: "")
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun makeRequiredLength() {
+        key += "000000000000".substring(0, 16 - key.length)
     }
 }
