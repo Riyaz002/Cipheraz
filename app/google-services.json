@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "559745782741",
+    "project_id": "cipheraz-1b545",
+    "storage_bucket": "cipheraz-1b545.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559745782741:android:fc4b3924724af8a97ba35c",
+        "android_client_info": {
+          "package_name": "com.riyaz.cipheraz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559745782741-robgrabqjgqgac3j9qpc8g2mi3vjgpfk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.riyaz.cipheraz",
+            "certificate_hash": "4b0022fcdb3976db7b1fad2c8777a50e549e9e9b"
+          }
+        },
+        {
+          "client_id": "559745782741-a1bmrgas3qn5sknoabmdv6sa12jlm08p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA43nc0Ar2ehPcwe4YDAr7WD3pymrWKhGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559745782741-a1bmrgas3qn5sknoabmdv6sa12jlm08p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
