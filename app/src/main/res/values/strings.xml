@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Cipheraz</string>
+    <string name="choose_file_button">choose file button</string>
+    <string name="encryption_button">encryption button</string>
+    <string name="decryption_button">decryption button</string>
+    <string name="start_process_button">start process button</string>
 </resources>
